@@ -34,15 +34,15 @@ export const useCustomFetch = () => {
     fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['images', searchTerm],
-    queryFn: ({ paramPage = 1 }) => getFetch(paramPage, searchTerm),
-    getNextPageParam: (lastPage, allPage) => {
+    queryFn: ({ pageParam = 1 }) => getFetch(pageParam, searchTerm),
+    getNextPageParam: (lastPage, allPages) => {
       const maxPage = Math.ceil(lastPage.total_pages / 10)
-      const nextPage = allPage.length + 1
+      const nextPage = allPages.length + 1
 
-      if (searchTerm) {
-        return nextPage <= maxPage ? nextPage : null
+      if (!searchTerm) {
+        return nextPage <= 10 ? nextPage : undefined
       } else {
-        return nextPage <= 10 ? nextPage : null
+        return nextPage <= maxPage ? nextPage : undefined
       }
     },
   })

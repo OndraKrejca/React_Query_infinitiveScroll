@@ -56,8 +56,6 @@ const Gallery = () => {
     )
   }
 
-  console.log(data)
-
   return (
     <section className='image-container'>
       {data.pages.map((page) => {
