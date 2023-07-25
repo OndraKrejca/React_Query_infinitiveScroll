@@ -18,20 +18,4 @@ export const reducer = (state, action) => {
       searchTerm: action.payload,
     }
   }
-
-  if (action.type === 'SETNEWIMAGE') {
-    return {
-      ...state,
-      newImage: action.payload,
-    }
-  }
-
-  if (action.type === 'SETPAGE') {
-    const newPage = state.page + 1
-
-    return {
-      ...state,
-      page: newPage,
-    }
-  }
 }

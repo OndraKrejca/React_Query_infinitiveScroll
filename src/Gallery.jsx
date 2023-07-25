@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { useGlobalContext } from './context'
-import { useInfinitiveScroll } from './customFetch'
+import { useEffect } from 'react'
+import { useCustomFetch } from './customFetch'
 
 const Gallery = () => {
-  const { searchTerm } = useGlobalContext()
-
   const {
     data,
-    isError,
     isLoading,
-    fetchNextPage,
-    hasNextPage,
+    isError,
     isFetching,
     isFetchingNextPage,
-  } = useInfinitiveScroll()
+    hasNextPage,
+    fetchNextPage,
+  } = useCustomFetch()
 
   const event = () => {
-    let newImage = false
+    let newImages = false
 
     if (
-      window.innerHeight + window.scrollY >=
-      document.body.scrollHeight - 20
+      window.scrollY + window.innerHeight >=
+      document.body.scrollHeight - 10
     ) {
-      newImage = true
+      newImages = true
       fetchNextPage()
     }
   }
@@ -38,7 +35,7 @@ const Gallery = () => {
   if (isLoading) {
     return (
       <section className='image-container'>
-        <h4> Loading...</h4>
+        <p>Loading....</p>
       </section>
     )
   }
@@ -46,7 +43,7 @@ const Gallery = () => {
   if (isError) {
     return (
       <section className='image-container'>
-        <h4> Error...</h4>
+        <p>Error....</p>
       </section>
     )
   }
@@ -54,27 +51,29 @@ const Gallery = () => {
   if (data.length < 1) {
     return (
       <section className='image-container'>
-        <h4> Error...</h4>
+        <p>Error data....</p>
       </section>
     )
   }
+
+  console.log(data)
 
   return (
     <section className='image-container'>
       {data.pages.map((page) => {
         return (page.results || page).map((item) => {
           return (
-            <img
-              src={item.urls.regular}
-              className='img'
-              key={item.id}
-              alt={item.alt_description}
-            />
+            <a href={item.links.html} key={item.id}>
+              <img
+                src={item.urls.regular}
+                className='img'
+                alt={item.alt_description}
+              ></img>
+            </a>
           )
         })
       })}
-      <div></div>
-      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div> {isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
     </section>
   )
 }

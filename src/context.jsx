@@ -7,15 +7,13 @@ const getInitialDarkMode = () => {
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme:dark)'
   ).matches
-  const setTheme = localStorage.getItem('theme') === 'true'
+  const setTheme = localStorage.getItem('theme') === true
   return setTheme || prefersDarkMode
 }
 
 const initialState = {
   isDarkTheme: getInitialDarkMode(),
   searchTerm: '',
-  page: 1,
-  newImage: false,
 }
 
 // URL
@@ -31,13 +29,6 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: 'SEARCHITEMS', payload: text })
   }
 
-  const setNewImage = (something) => {
-    dispatch({ type: 'SETNEWIMAGE', payload: something })
-  }
-  const setPage = () => {
-    dispatch({ type: 'SETPAGE' })
-  }
-
   useEffect(() => {
     document.body.classList.toggle('dark-theme', state.isDarkTheme)
   }, [])
@@ -48,8 +39,6 @@ export const AppProvider = ({ children }) => {
         ...state,
         toggleDarkTheme,
         searchItems,
-        setNewImage,
-        setPage,
       }}
     >
       {children}
